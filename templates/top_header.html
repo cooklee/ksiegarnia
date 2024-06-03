@@ -1,0 +1,15 @@
+<div class="navbar">
+    <div>
+        <a href="{% url 'add_author' %}">Dodaj Autora</a>
+        <a href="{% url 'author_list' %}">Lista Autorów </a>
+    </div>
+    <div>
+        {% if user.is_authenticated %}
+            Witaj {{ user }}
+            <a href="{% url 'logout' %}">wyloguj</a>
+        {% else %}
+            <a href="{% url 'register' %}">zarejestruj</a>
+            <a href="{% url 'login' %}">zaloguj</a>
+        {% endif %}
+    </div>
+</div>

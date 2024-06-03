@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path
 from django.views.generic import TemplateView
 from accounts import views
+from shop import views as shop_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -25,4 +26,6 @@ urlpatterns = [
     path('register/', views.CreateUserView.as_view(), name="register"),
     path('login/', views.LoginView.as_view(), name="login"),
     path('logout/', views.LogoutView.as_view(), name="logout"),
+    path('add_author/', shop_views.AddAuthorView.as_view(), name="add_author"),
+    path('author_list/', shop_views.AuthorListView.as_view(), name="author_list"),
 ]
