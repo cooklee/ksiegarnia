@@ -1,9 +1,9 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views import View
 
 from shop.forms import AddBookForm
-from shop.models import Author
+from shop.models import Author, Book
 
 
 # Create your views here.
@@ -22,6 +22,17 @@ class AddBookView(View):
 
     def get(self, request):
         form = AddBookForm()
+        return render(request, "shop/form.html", {"form": form})
+
+    def post(self, request):
+        form = AddBookForm(request.POST)
+        if form.is_valid():
+            title = form.cleaned_data['title']
+            author = form.cleaned_data['author']
+            published_date = form.cleaned_data['published_date']
+            isbn = form.cleaned_data['isbn']
+            Book.objects.create(title=title, author=author, published_date=published_date, isbn=isbn)
+            return redirect('add_book')
         return render(request, "shop/form.html", {"form": form})
 class AuthorListView(View):
 
