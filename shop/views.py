@@ -1,11 +1,11 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views import View
-from django.views.generic import CreateView, ListView, UpdateView
+from django.views.generic import CreateView, ListView, UpdateView, DeleteView
 
 from shop.forms import AddBookForm, AddMagazineForm
-from shop.models import Author, Book, Publisher
+from shop.models import Author, Book, Publisher, Cart, CartBook
 
 
 # Create your views here.
@@ -72,4 +72,29 @@ class UpdatePublisherView(UpdateView):
     model = Publisher
     fields = "__all__"
     template_name = "shop/form.html"
+
+    def get_success_url(self):
+        return reverse("update_publisher", args=(self.get_object().pk,))
+
+class DeletePublisherView(DeleteView):
+    model = Publisher
+    template_name = "shop/delete_form.html"
     success_url = reverse_lazy("list_publisher")
+
+class BookListView(ListView):
+    model = Book
+    template_name = "shop/book_list.html"
+
+
+class AddBookToCartView(View):
+
+    def get(self, request, book_pk):
+        book = Book.objects.get(pk=book_pk)
+        cart, created = Cart.objects.get_or_create(user=request.user)
+        try:
+            cartItem = CartBook.objects.get(book=book, cart=cart)
+            cartItem.quantity += 1
+            cartItem.save()
+        except CartBook.DoesNotExist:
+            cart.books.add(book)
+        return redirect("book_list")

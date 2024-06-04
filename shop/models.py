@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 
 # Create your models here.
@@ -14,6 +15,7 @@ class Book(models.Model):
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
     published_date = models.DateField()
     isbn = models.CharField(max_length=13)
+    price = models.FloatField(default=10.0)
 
     def __str__(self):
         return f"{self.title} {self.author} {self.published_date} {self.isbn}"
@@ -39,3 +41,12 @@ class Magazine(models.Model):
     period = models.IntegerField(choices=PERIODS, default=1)
     def __str__(self):
         return f"{self.title}"
+
+class CartBook(models.Model):
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    cart = models.ForeignKey('Cart', on_delete=models.CASCADE)
+    quantity = models.IntegerField(default=1)
+
+class Cart(models.Model):
+    books = models.ManyToManyField(Book, through='CartBook')
+    user = models.OneToOneField(User, on_delete=models.CASCADE)

@@ -21,9 +21,12 @@ from shop import views
 urlpatterns = [
     path('add_author/', views.AddAuthorView.as_view(), name="add_author"),
     path('add_book/', views.AddBookView.as_view(), name="add_book"),
+    path('book_list/', views.BookListView.as_view(), name="book_list"),
     path('author_list/',views.AuthorListView.as_view(), name="author_list"),
     path('add_magazine/', views.AddMagazineView.as_view(), name="add_magazine"),
     path('add_publisher/', views.AddPublisherView.as_view(), name="add_publisher"),
     path('publisher_list/', views.PublisherListView.as_view(), name="list_publisher"),
     path('update_publisher/<int:pk>/', views.UpdatePublisherView.as_view(), name="update_publisher"),
+    path('delete_publisher/<int:pk>/', views.DeletePublisherView.as_view(), name="delete_publisher"),
+    path('add_book_to_cart/<int:book_pk>/', views.AddBookToCartView.as_view(), name="add_book_to_cart"),
 ]

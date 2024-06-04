@@ -12,6 +12,8 @@ class AddBookForm(forms.Form):
     author = forms.ModelChoiceField(queryset=Author.objects.all())
     published_date = forms.DateField()
     isbn = forms.CharField(max_length=13)
+    price = forms.FloatField(initial=10.0)
+
 
 
 class AddMagazineForm(forms.ModelForm):
