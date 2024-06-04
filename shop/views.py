@@ -2,7 +2,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
 from django.views import View
-from django.views.generic import CreateView, ListView, UpdateView, DeleteView
+from django.views.generic import CreateView, ListView, UpdateView, DeleteView, DetailView
 
 from shop.forms import AddBookForm, AddMagazineForm
 from shop.models import Author, Book, Publisher, Cart, CartBook, Order, OrderBook
@@ -126,3 +126,8 @@ class OrderListView(LoginRequiredMixin, ListView):
     template_name = "shop/order_list.html"
     def get_queryset(self):
         return Order.objects.filter(user=self.request.user)
+
+
+class DetailOrderView(LoginRequiredMixin, DetailView):
+    model = Order
+    template_name = "shop/order_detail.html"

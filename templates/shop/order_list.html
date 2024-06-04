@@ -8,9 +8,9 @@
     </tr>
     {% for item in object_list %}
         <tr>
-            <td>{{ item.id }}</td>
+            <td><a href="{% url 'detail_order' item.pk %}"> {{ item.id }}</a></td>
             <td>{{ item.total }}</td>
-            <td>{{ item.date }}</td>
+            <td>{{ item.date|date:"d-M-Y"  }}</td>
 
         </tr>
     {% endfor %}
