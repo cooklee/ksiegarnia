@@ -5,7 +5,7 @@ from django.views import View
 from django.views.generic import CreateView, ListView, UpdateView, DeleteView
 
 from shop.forms import AddBookForm, AddMagazineForm
-from shop.models import Author, Book, Publisher, Cart, CartBook
+from shop.models import Author, Book, Publisher, Cart, CartBook, Order, OrderBook
 
 
 # Create your views here.
@@ -33,7 +33,8 @@ class AddBookView(View):
             author = form.cleaned_data['author']
             published_date = form.cleaned_data['published_date']
             isbn = form.cleaned_data['isbn']
-            Book.objects.create(title=title, author=author, published_date=published_date, isbn=isbn)
+            price = form.cleaned_data['price']
+            Book.objects.create(title=title, author=author, published_date=published_date, isbn=isbn, price = price)
             return redirect('add_book')
         return render(request, "shop/form.html", {"form": form})
 class AuthorListView(View):
@@ -98,3 +99,30 @@ class AddBookToCartView(View):
         except CartBook.DoesNotExist:
             cart.books.add(book)
         return redirect("book_list")
+
+class ShowCardView(LoginRequiredMixin, View):
+    def get(self, request):
+        cart, created = Cart.objects.get_or_create(user=request.user)
+        return render(request, "shop/cart.html", {"cart": cart})
+
+
+class CreateOrderView(LoginRequiredMixin, View):
+    def post(self, request):
+        cart, created = Cart.objects.get_or_create(user=request.user)
+        if created or not cart.cartbook_set.all():
+            return redirect("cart")
+        order = Order.objects.create(user=request.user)
+        for cart_book in cart.cartbook_set.all():
+            OrderBook.objects.create(book=cart_book.book,
+                                     order=order,
+                                     quantity=cart_book.quantity)
+        # for cart_book in cart.cartbook_set.all():
+        #     OrderBook.objects.create(book=cart_book.book, order=order, quantity=cart_book.quantity)
+        cart.cartbook_set.all().delete()
+        return redirect("cart")
+
+class OrderListView(LoginRequiredMixin, ListView):
+    model = Order
+    template_name = "shop/order_list.html"
+    def get_queryset(self):
+        return Order.objects.filter(user=self.request.user)

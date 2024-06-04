@@ -47,6 +47,39 @@ class CartBook(models.Model):
     cart = models.ForeignKey('Cart', on_delete=models.CASCADE)
     quantity = models.IntegerField(default=1)
 
+    def total(self):
+        return self.quantity * self.book.price
 class Cart(models.Model):
     books = models.ManyToManyField(Book, through='CartBook')
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+
+    def total(self):
+        """
+        prostolinijny przykład natomiast to nie jest optymalne rozwiązanie
+        optypamlne rozwiązanie to zrobienie zapytania do bazy danych przez funkcje agregujące
+        """
+
+        total = 0
+        for cb in self.cartbook_set.all():
+            total += cb.total()
+        return total
+
+
+class OrderBook(models.Model):
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    order = models.ForeignKey('Order', on_delete=models.CASCADE)
+    quantity = models.IntegerField(default=1)
+
+    def total(self):
+        return self.quantity * self.book.price
+
+class Order(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    books = models.ManyToManyField(Book, through='OrderBook')
+    date = models.DateField(auto_now_add=True)
+
+    def total(self):
+        total = 0
+        for ob in self.orderbook_set.all():
+            total += ob.total()
+        return total

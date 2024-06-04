@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+    <table>
+    <tr>
+        <th>Id zamowienia</th>
+        <th>cena</th>
+        <th>Data</th>
+    </tr>
+    {% for item in object_list %}
+        <tr>
+            <td>{{ item.id }}</td>
+            <td>{{ item.total }}</td>
+            <td>{{ item.date }}</td>
+
+        </tr>
+    {% endfor %}
+    </table>
+{% endblock %}

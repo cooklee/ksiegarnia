@@ -29,4 +29,7 @@ urlpatterns = [
     path('update_publisher/<int:pk>/', views.UpdatePublisherView.as_view(), name="update_publisher"),
     path('delete_publisher/<int:pk>/', views.DeletePublisherView.as_view(), name="delete_publisher"),
     path('add_book_to_cart/<int:book_pk>/', views.AddBookToCartView.as_view(), name="add_book_to_cart"),
+    path('cart/', views.ShowCardView.as_view(), name="cart"),
+    path('create_order/', views.CreateOrderView.as_view(), name="create_order"),
+    path('order_list/', views.OrderListView.as_view(), name="order_list"),
 ]
