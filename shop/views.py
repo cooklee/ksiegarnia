@@ -1,9 +1,11 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
+from django.urls import reverse_lazy
 from django.views import View
+from django.views.generic import CreateView, ListView, UpdateView
 
 from shop.forms import AddBookForm, AddMagazineForm
-from shop.models import Author, Book
+from shop.models import Author, Book, Publisher
 
 
 # Create your views here.
@@ -53,3 +55,21 @@ class AddMagazineView(View):
             magazine = form.save()
             return redirect('add_magazine')
         return render(request, "shop/form.html", {"form": form})
+
+
+class AddPublisherView(CreateView):
+    model = Publisher
+    fields = "__all__"
+    template_name = "shop/form.html"
+    success_url = reverse_lazy("add_publisher")
+
+class PublisherListView(ListView):
+    model = Publisher
+    template_name = "shop/publisher_list.html"
+
+
+class UpdatePublisherView(UpdateView):
+    model = Publisher
+    fields = "__all__"
+    template_name = "shop/form.html"
+    success_url = reverse_lazy("list_publisher")

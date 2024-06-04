@@ -22,5 +22,8 @@ urlpatterns = [
     path('add_author/', views.AddAuthorView.as_view(), name="add_author"),
     path('add_book/', views.AddBookView.as_view(), name="add_book"),
     path('author_list/',views.AuthorListView.as_view(), name="author_list"),
-    path('add_magazine/', views.AddMagazineView.as_view(), name="add_magazine")
+    path('add_magazine/', views.AddMagazineView.as_view(), name="add_magazine"),
+    path('add_publisher/', views.AddPublisherView.as_view(), name="add_publisher"),
+    path('publisher_list/', views.PublisherListView.as_view(), name="list_publisher"),
+    path('update_publisher/<int:pk>/', views.UpdatePublisherView.as_view(), name="update_publisher"),
 ]
