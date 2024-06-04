@@ -2,7 +2,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
 from django.views import View
 
-from shop.forms import AddBookForm
+from shop.forms import AddBookForm, AddMagazineForm
 from shop.models import Author, Book
 
 
@@ -39,3 +39,17 @@ class AuthorListView(View):
     def get(self, request):
         authors = Author.objects.all()
         return render(request, "shop/author_list.html", {"authors": authors})
+
+
+class AddMagazineView(View):
+
+    def get(self, request):
+        form = AddMagazineForm()
+        return render(request, "shop/form.html", {"form": form})
+
+    def post(self, request):
+        form = AddMagazineForm(request.POST)
+        if form.is_valid():
+            magazine = form.save()
+            return redirect('add_magazine')
+        return render(request, "shop/form.html", {"form": form})
