@@ -12,7 +12,7 @@
         <tr>
             <td>{{ item.book.title }}</td>
             <td>{{ item.quantity }}</td>
-            <td>{{ item.book.price }}</td>
+            <td>{{ item.book.get_price}}</td>
             <td>{{ item.total }}</td>
         </tr>
     {% endfor %}
@@ -20,7 +20,7 @@
         <td></td>
         <td></td>
         <td></td>
-        <td>{{ cart.total }}</td>
+        <td>{{ cart.get_total }}</td>
     </tr>
     </table>
     <form method="post" action="{% url 'create_order' %}">

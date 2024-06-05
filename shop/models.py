@@ -17,6 +17,8 @@ class Book(models.Model):
     isbn = models.CharField(max_length=13)
     price = models.FloatField(default=10.0)
 
+    def get_price(self):
+        return f"{self.price:.2f}"
     def __str__(self):
         return f"{self.title} {self.author} {self.published_date} {self.isbn}"
 
@@ -73,6 +75,9 @@ class Cart(models.Model):
             total += cb.total()
         return total
 
+    def get_total(self):
+        return f"{self.total():.2f}"
+
 
 class OrderBook(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
@@ -91,7 +96,7 @@ class Order(models.Model):
         total = 0
         for ob in self.orderbook_set.all():
             total += ob.total()
-        return total
+        return f"{total:.2f}"
 
 
 class CosSmiesznego(models.Model):
