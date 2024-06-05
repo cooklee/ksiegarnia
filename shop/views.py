@@ -4,7 +4,7 @@ from django.urls import reverse_lazy, reverse
 from django.views import View
 from django.views.generic import CreateView, ListView, UpdateView, DeleteView, DetailView
 
-from shop.forms import AddBookForm, AddMagazineForm
+from shop.forms import AddBookForm, AddMagazineForm, AddCommentForm
 from shop.models import Author, Book, Publisher, Cart, CartBook, Order, OrderBook
 
 
@@ -77,6 +77,9 @@ class UpdatePublisherView(UpdateView):
     def get_success_url(self):
         return reverse("update_publisher", args=(self.get_object().pk,))
 
+
+
+
 class DeletePublisherView(DeleteView):
     model = Publisher
     template_name = "shop/delete_form.html"
@@ -131,3 +134,23 @@ class OrderListView(LoginRequiredMixin, ListView):
 class DetailOrderView(LoginRequiredMixin, DetailView):
     model = Order
     template_name = "shop/order_detail.html"
+
+class DetailBookView(DetailView):
+    model = Book
+    template_name = "shop/book_detail.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = AddCommentForm()
+        return context
+class AddCommentView(LoginRequiredMixin, View):
+    def post(self, request, book_pk):
+        form = AddCommentForm(request.POST)
+        if form.is_valid():
+            book = Book.objects.get(pk=book_pk)
+            comment = form.save(commit=False)
+            comment.book = book
+            comment.user = request.user
+            comment.save()
+            return redirect("detail_book", book_pk)
+        return render(request, "shop/book_detail.html", {"form": form})

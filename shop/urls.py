@@ -33,4 +33,6 @@ urlpatterns = [
     path('create_order/', views.CreateOrderView.as_view(), name="create_order"),
     path('order_list/', views.OrderListView.as_view(), name="order_list"),
     path('detail_odrer/<int:pk>/', views.DetailOrderView.as_view(), name="detail_order"),
+    path('detail_book/<int:pk>/', views.DetailBookView.as_view(), name="detail_book"),
+    path('add_comment/<int:book_pk>/', views.AddCommentView.as_view(), name="add_comment"),
 ]

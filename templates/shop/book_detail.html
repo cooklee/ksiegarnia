@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1>{{ book.title }}</h1>
+    <p>{{ book.author }}</p>
+    <p>{{ book.price }}</p>
+    <p>{{ book.description }}</p>
+    <form method="post" action="{% url 'add_book_to_cart' book.pk %}">
+        {% csrf_token %}
+        <button type="submit">Dodaj do koszyka</button>
+    </form>
+    <a href="{% url 'cart' %}">Koszyk</a>
+
+    <ul>
+        {% for comment in book.comment_set.all %}
+            <li>{{ comment.text }} -- <small>{{ comment.user }}</small></li>
+        {% endfor %}
+    </ul>
+    <form method="post" action="{% url 'add_comment' book.pk %}">
+        {% csrf_token %}
+        {{  form.as_p }}
+        <button type="submit">Dodaj komentarz</button>
+    </form>
+{% endblock %}

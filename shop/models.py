@@ -21,6 +21,15 @@ class Book(models.Model):
         return f"{self.title} {self.author} {self.published_date} {self.isbn}"
 
 
+class Comment(models.Model):
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    text = models.TextField()
+    date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.book} {self.user} {self.date}"
+
 class Publisher(models.Model):
     name = models.CharField(max_length=100)
     address = models.CharField(max_length=100)
