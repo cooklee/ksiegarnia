@@ -1,4 +1,4 @@
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin, PermissionRequiredMixin
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
@@ -81,7 +81,9 @@ class UpdatePublisherView(UpdateView):
 
 
 
-class DeletePublisherView(DeleteView):
+class DeletePublisherView(PermissionRequiredMixin, DeleteView):
+    permission_required = ["shop.delete_publisher", 'shop.add_publisher']
+
     model = Publisher
     template_name = "shop/delete_form.html"
     success_url = reverse_lazy("list_publisher")

@@ -5,8 +5,10 @@
         {% csrf_token %}
         <p><input type="text" name="first_name" placeholder="imie"></p>
         <p><input type="text" name="last_name" placeholder="nazwisko"></p>
+        {% if perms.auth.delete_user %}
         <p>
             <input type="submit">
         </p>
+        {% endif %}
     </form>
 {% endblock %}

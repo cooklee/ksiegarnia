@@ -92,3 +92,14 @@ class Order(models.Model):
         for ob in self.orderbook_set.all():
             total += ob.total()
         return total
+
+
+class CosSmiesznego(models.Model):
+    name = models.CharField(max_length=100)
+    def __str__(self):
+        return f"{self.name}"
+
+    class Meta:
+        permissions = [
+            ('czary_mary', 'Czary Mary'),
+        ]
