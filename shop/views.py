@@ -1,11 +1,12 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
 from django.views import View
 from django.views.generic import CreateView, ListView, UpdateView, DeleteView, DetailView
 
 from shop.forms import AddBookForm, AddMagazineForm, AddCommentForm
-from shop.models import Author, Book, Publisher, Cart, CartBook, Order, OrderBook
+from shop.models import Author, Book, Publisher, Cart, CartBook, Order, OrderBook, Comment
 
 
 # Create your views here.
@@ -144,6 +145,7 @@ class DetailBookView(DetailView):
         context['form'] = AddCommentForm()
         return context
 class AddCommentView(LoginRequiredMixin, View):
+
     def post(self, request, book_pk):
         form = AddCommentForm(request.POST)
         if form.is_valid():
@@ -154,3 +156,23 @@ class AddCommentView(LoginRequiredMixin, View):
             comment.save()
             return redirect("detail_book", book_pk)
         return render(request, "shop/book_detail.html", {"form": form})
+
+
+class UpdateCommentView(UserPassesTestMixin, View):
+
+    def test_func(self):
+        comment = Comment.objects.get(pk=self.kwargs['pk'])
+        return self.request.user == comment.user
+
+    def get(self, request, pk):
+        comment = Comment.objects.get(pk=pk)
+        form = AddCommentForm(instance=comment)
+        return render(request, "shop/form.html", {"form": form})
+
+    def post(self, request, pk):
+        comment = Comment.objects.get(pk=pk)
+        form = AddCommentForm(request.POST, instance=comment)
+        if form.is_valid():
+            form.save()
+            return redirect("detail_book", comment.book.pk)
+        return render(request, "shop/form.html", {"form": form})

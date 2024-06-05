@@ -35,4 +35,5 @@ urlpatterns = [
     path('detail_odrer/<int:pk>/', views.DetailOrderView.as_view(), name="detail_order"),
     path('detail_book/<int:pk>/', views.DetailBookView.as_view(), name="detail_book"),
     path('add_comment/<int:book_pk>/', views.AddCommentView.as_view(), name="add_comment"),
+    path('update_comment/<int:pk>/', views.UpdateCommentView.as_view(), name="update_comment"),
 ]

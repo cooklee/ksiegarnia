@@ -12,12 +12,19 @@
 
     <ul>
         {% for comment in book.comment_set.all %}
-            <li>{{ comment.text }} -- <small>{{ comment.user }}</small></li>
+            <li>{{ comment.text }} -- <small>{{ comment.user }}</small>
+            {% if comment.user == user %}
+            <a href="{% url 'update_comment' comment.pk %}">U</a>
+            {% endif %}
+
+            </li>
         {% endfor %}
     </ul>
-    <form method="post" action="{% url 'add_comment' book.pk %}">
-        {% csrf_token %}
-        {{  form.as_p }}
-        <button type="submit">Dodaj komentarz</button>
-    </form>
+    {% if user.is_authenticated %}
+        <form method="post" action="{% url 'add_comment' book.pk %}">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Dodaj komentarz</button>
+        </form>
+    {% endif %}
 {% endblock %}
