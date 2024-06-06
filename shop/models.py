@@ -46,7 +46,7 @@ class Comment(models.Model):
 class Publisher(models.Model):
     name = models.CharField(max_length=100)
     address = models.CharField(max_length=100)
-
+    #magazine_set
     def get_absolute_url(self):
         return reverse('update_publisher', args=(self.pk,))
     def __str__(self):

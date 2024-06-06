@@ -10,7 +10,7 @@ from shop.models import Author, Book, Publisher, Cart, CartBook, Order, OrderBoo
 
 
 # Create your views here.
-class AddAuthorView(View):
+class AddAuthorView(LoginRequiredMixin, View):
 
     def get(self, request):
         return render(request, "shop/add_author.html")
