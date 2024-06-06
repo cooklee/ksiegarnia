@@ -1,11 +1,5 @@
 {% extends 'base.html' %}
 {% block content %}
     <h1>Books</h1>
-    <ul>
-        {% for book in object_list %}
-            <li><a href="{% url 'detail_book' book.id%}">{{ book.title }} by {{ book.author }}</a> 
-                <a href="{% url 'add_book_to_cart' book.pk %}">Dodaj Do Koszyka</a> 
-            </li>
-        {% endfor %}
-    </ul>
+    {% include 'shop/list_view.html' %}
 {% endblock %}

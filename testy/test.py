@@ -37,3 +37,24 @@ def test_pesel_data():
 ])
 def test_dates_pesel(pesel, data):
     assert analyze_pesel(pesel)['birth_date'] == data
+
+
+
+def is_leap_year(year):
+    if year % 4 == 0:
+        if year % 100 == 0:
+            if year % 400 == 0:
+                return True
+            return False
+        return True
+    return False
+
+
+def test_leap_year():
+    assert is_leap_year(2000)
+
+def test_leap_year2():
+    assert is_leap_year(2004)
+
+def test_leap_year3():
+    assert is_leap_year(2008)

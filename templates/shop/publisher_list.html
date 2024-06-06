@@ -1,11 +1,4 @@
 {% extends 'base.html' %}
 {% block content %}
-    <ul>
-        {% for publisher in object_list %}
-            <li><a href="{% url 'update_publisher' publisher.id%}"> {{ publisher.name }}</a>
-            <a href="{% url 'delete_publisher' publisher.id%}"> X</a>
-            
-            </li>
-        {% endfor %}
-    </ul>
+    {% include 'shop/list_view.html'  %}
 {% endblock %}

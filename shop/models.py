@@ -1,10 +1,16 @@
+
 from django.contrib.auth.models import User
 from django.db import models
+from django.urls import reverse
+
 
 # Create your models here.
 class Author(models.Model):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
+
+    def get_absolute_url(self):
+        return ""
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
@@ -17,6 +23,8 @@ class Book(models.Model):
     isbn = models.CharField(max_length=13)
     price = models.FloatField(default=10.0)
 
+    def get_absolute_url(self):
+        return reverse('detail_book', args=(self.pk,))
     def get_price(self):
         return f"{self.price:.2f}"
     def __str__(self):
@@ -29,12 +37,18 @@ class Comment(models.Model):
     text = models.TextField()
     date = models.DateTimeField(auto_now_add=True)
 
+    def get_absolute_url(self):
+        return reverse('update_comment', args=(self.pk,))
+
     def __str__(self):
         return f"{self.book} {self.user} {self.date}"
 
 class Publisher(models.Model):
     name = models.CharField(max_length=100)
     address = models.CharField(max_length=100)
+
+    def get_absolute_url(self):
+        return reverse('update_publisher', args=(self.pk,))
     def __str__(self):
         return f"{self.name} {self.address}"
 

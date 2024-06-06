@@ -1,0 +1,7 @@
+<ul class="list-group">
+    {% for object in object_list %}
+        <li class="list-group-item {% cycle 'grey' 'white' %}"><a href="{{ object.get_absolute_url }}">{{ object }}</a>
+{#            <a href="{% url 'add_book_to_cart' book.pk %}">Dodaj Do Koszyka</a>#}
+        </li>
+    {% endfor %}
+</ul>
