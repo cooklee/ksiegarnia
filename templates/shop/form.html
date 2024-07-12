@@ -1,5 +1,11 @@
 {% extends 'base.html' %}
 {% block content %}
+    {{ przepis }}
+    <ul>
+        {% for s in przepis.skladnikwprzepisie_set.all %}
+            <li> {{ s.skladnik.name }} {{ s.ilosc }} {{ s.jednostka }}</li>
+        {% endfor %}
+    </ul>
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
